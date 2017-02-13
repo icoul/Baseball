@@ -8,3 +8,6 @@ class Data(models.Model):
     birth = models.CharField(max_length = 20)
     height = models.IntegerField()
     weight = models.IntegerField()
+
+    def __str__(self):
+        return self.number
