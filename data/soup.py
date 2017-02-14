@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from .models import Data
 import urllib.request
 import re
 
@@ -11,45 +10,27 @@ def soup_data(url):
 
     return soup
 
-soup = soup_data('http://www.samsunglions.com/roster/roster_3_list.asp')
-urls = []
-for x in soup.find_all('a'):
-    if re.search(r'[0-9]+$', x.get('href')):
-        urls.append(x.get('href').split('=')[1])
+soup = soup_data('http://www.statiz.co.kr/player.php?name=%EC%9C%A4%EC%84%B1%ED%99%98&birth=1981-10-08')
+stat_name = ['game', 'complited_game', 'shutout', 'games_started', 'wins', 'loses', 'save', 'hold', 'inning',
+             'runs', 'earned_runs', 'batter', 'hits', 'doubles',
+             'triples', 'home_runs', 'bases_on_balls', 'intentional_bob', 'hit_by_pitch',
+             'strike_out', 'balks', 'wild_pitches', 'era', 'fip', 'whip', 'era_plus', 'fip_plus', 'war', 'wpa']
+stat = {}
+flag = 0
+stat_data = soup.find_all('td', 'statdata')
 
-for number in urls:
-    player = []
-    url = 'http://www.samsunglions.com/roster/roster_2.asp?pcode=' + number
-    soup = soup_data(url)
-    for x in soup.find('strong', ['t']):
-        if not x.string:
-            player.append(0)
-        else:
-            player.append(x.string.strip())
+for x in stat_data:
+    if flag == 0 and x.string != '2016':
+        break
 
-    position = soup.find('em', ['s']).string.split('/')
-    position = position[0]
-    hand = position[1].strip()
+    flag += 1
+    if flag < 2:
+        continue
+    if x.string == '2016':
+        break
+    stat[stat_name[flag - 2]] = x.string
 
-    for x in soup.find('p'):
-        if not x.string:
-            continue
+print(stat)
 
-        info = x.strip().split(' : ')
 
-        if x.string and info[0] == '생년월일':
-            birth = re.findall(r'[0-9]+', info[1])
-            birth = birth[0] + '-' + birth[1] + '-' + birth[2]
-            continue
-        if x.string and info[0] == '키/몸무게' and re.search(r'[0-9]+', info[1]):
-            w_and_h = re.findall(r'[0-9]+', info[1])
-            height = w_and_h[0]
-            player.append(w_and_h[1])
-            break
-        else:
-            height = 0
-            weight = 0
-            break
 
-    data_insert = Data(number = player[0], name = player[1], position = position, hand = hand, birth = birth, height = height, weight = weight)
-    data_insert.save()
