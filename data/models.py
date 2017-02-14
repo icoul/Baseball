@@ -57,7 +57,7 @@ class Pitcher_stat(models.Model):
     games_started = models.CharField(max_length=20)
     wins = models.CharField(max_length = 20)
     loses = models.CharField(max_length = 20)
-    save = models.CharField(max_length = 20)
+    saves = models.CharField(max_length = 20)
     hold = models.CharField(max_length = 20)
     inning = models.CharField(max_length = 20)
     runs = models.CharField(max_length = 20)
