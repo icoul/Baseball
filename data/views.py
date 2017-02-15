@@ -1,7 +1,7 @@
 from django.shortcuts import render
+from django.db import transaction
 from bs4 import BeautifulSoup
-from .models import Player_info
-from .models import Better_stat, Pitcher_stat
+from .models import PlayerInfo, BetterStat, PitcherStat
 import urllib.request
 import re
 
@@ -61,8 +61,8 @@ def batter(request):
     for url_number in urls:
         player = player_data(url_number)
 
-        data_insert = Player_info(number=player[0], name=player[1], position=player[2], hand=player[3], birth=player[4],
-                                  height=player[5], weight=player[6])
+        data_insert = PlayerInfo(number=player[0], name=player[1], position=player[2], hand=player[3], birth=player[4],
+                                 height=player[5], weight=player[6])
         data_insert.save()
 
     return render(request, 'data/batter.html')
@@ -78,16 +78,17 @@ def pitcher(request):
     for url_number in urls:
         player = player_data(url_number)
 
-        data_insert = Player_info(number=player[0], name=player[1], position=player[2], hand=player[3], birth=player[4],
-                                  height=player[5], weight=player[6])
+        data_insert = PlayerInfo(number=player[0], name=player[1], position=player[2], hand=player[3], birth=player[4],
+                                 height=player[5], weight=player[6])
         data_insert.save()
 
     return render(request, 'data/pitcher.html')
 
 
+@transaction.atomic
 def batter_stat(request):
     positions = ['내야수', '외야수', '포수']
-    info = Player_info.objects.filter(position__in = positions)
+    info = PlayerInfo.objects.filter(position__in = positions)
 
     stat_name = ['all_bats', 'at_bats', 'runs_scored', 'hits', 'doubles', 'triples', 'home_runs', 'total_base',
                  'runs_batted_in', 'stolen_bases', 'caught_stealing', 'bases_on_balls', 'hit_by_pitch',
@@ -121,27 +122,28 @@ def batter_stat(request):
         if not stat:
             continue
 
-        stat_insert = Better_stat(name=member.name, player_info_id=member.id, all_bats=stat['all_bats'],
-                                  at_bats=stat['at_bats'], runs_scored=stat['runs_scored'], hits=stat['hits'],
-                                  doubles=stat['doubles'], triples=stat['triples'], home_runs=stat['home_runs'],
-                                  total_base=stat['total_base'], runs_batted_in=stat['runs_batted_in'],
-                                  stolen_bases=stat['stolen_bases'], caught_stealing=stat['caught_stealing'],
-                                  bases_on_balls=stat['bases_on_balls'], hit_by_pitch=stat['hit_by_pitch'],
-                                  intentional_bob=stat['intentional_bob'], strike_out=stat['strike_out'],
-                                  double_play=stat['double_play'], sacrifice=stat['sacrifice'],
-                                  sacrifice_fly=stat['sacrifice_fly'], batting_avg=stat['batting_avg'],
-                                  on_base_per=stat['on_base_per'], slugging_per=stat['slugging_per'],
-                                  ops=stat['ops'], woba=stat['woba'], wrc_plus=stat['wrc_plus'], war=stat['war'],
-                                  wpa=stat['wpa'])
+        stat_insert = BetterStat(name=member.name, player_info_id=member.id, all_bats=stat['all_bats'],
+                                 at_bats=stat['at_bats'], runs_scored=stat['runs_scored'], hits=stat['hits'],
+                                 doubles=stat['doubles'], triples=stat['triples'], home_runs=stat['home_runs'],
+                                 total_base=stat['total_base'], runs_batted_in=stat['runs_batted_in'],
+                                 stolen_bases=stat['stolen_bases'], caught_stealing=stat['caught_stealing'],
+                                 bases_on_balls=stat['bases_on_balls'], hit_by_pitch=stat['hit_by_pitch'],
+                                 intentional_bob=stat['intentional_bob'], strike_out=stat['strike_out'],
+                                 double_play=stat['double_play'], sacrifice=stat['sacrifice'],
+                                 sacrifice_fly=stat['sacrifice_fly'], batting_avg=stat['batting_avg'],
+                                 on_base_per=stat['on_base_per'], slugging_per=stat['slugging_per'],
+                                 ops=stat['ops'], woba=stat['woba'], wrc_plus=stat['wrc_plus'], war=stat['war'],
+                                 wpa=stat['wpa'])
         stat_insert.save()
 
     return render(request, 'data/batter_stat.html')
 
 
+@transaction.atomic
 def pitcher_stat(request):
-    info = Player_info.objects.filter(position = '투수')
+    info = PlayerInfo.objects.filter(position = '투수')
 
-    stat_name = ['game', 'complited_game', 'shutout', 'games_started', 'wins', 'loses', 'saves', 'hold', 'inning',
+    stat_name = ['game', 'complited_game', 'shutout', 'games_started', 'wins', 'loses', 'saves', 'holds', 'innings',
                  'runs', 'earned_runs', 'batter', 'hits', 'doubles',
                  'triples', 'home_runs', 'bases_on_balls', 'intentional_bob', 'hit_by_pitch',
                  'strike_out', 'balks', 'wild_pitches', 'era', 'fip', 'whip', 'era_plus', 'fip_plus', 'war', 'wpa']
@@ -173,19 +175,17 @@ def pitcher_stat(request):
         if not stat:
             continue
 
-        stat_insert = Pitcher_stat(name=member.name, player_info_id=member.id, game=stat['game'],
-                                   complited_game=stat['complited_game'], shutout=stat['shutout'], games_started=stat['games_started'],
-                                   wins=stat['wins'], loses=stat['loses'], saves=stat['saves'],
-                                   hold=stat['hold'], inning=stat['inning'],
-                                   runs=stat['runs'], earned_runs=stat['earned_runs'],
-                                   batter=stat['batter'], hits=stat['hits'],
-                                   doubles=stat['doubles'], triples=stat['triples'],
-                                   home_runs=stat['home_runs'], bases_on_balls=stat['bases_on_balls'],
-                                   intentional_bob=stat['intentional_bob'], hit_by_pitch=stat['hit_by_pitch'],
-                                   strike_out=stat['strike_out'], balks=stat['balks'],
-                                   wild_pitches=stat['wild_pitches'], era=stat['era'], fip=stat['fip'], whip=stat['whip'],
-                                   era_plus=stat['era_plus'], fip_plus=stat['fip_plus'], war=stat['war'], wpa=stat['wpa'])
+        stat_insert = PitcherStat(name=member.name, player_info_id=member.id, game=stat['game'],
+                                  complited_game=stat['complited_game'], shutout=stat['shutout'],
+                                  games_started=stat['games_started'], wins=stat['wins'], loses=stat['loses'],
+                                  saves=stat['saves'], holds=stat['holds'], innings=stat['innings'], runs=stat['runs'],
+                                  earned_runs=stat['earned_runs'], batter=stat['batter'], hits=stat['hits'],
+                                  doubles=stat['doubles'], triples=stat['triples'], home_runs=stat['home_runs'],
+                                  bases_on_balls=stat['bases_on_balls'], intentional_bob=stat['intentional_bob'],
+                                  hit_by_pitch=stat['hit_by_pitch'], strike_out=stat['strike_out'],
+                                  balks=stat['balks'], wild_pitches=stat['wild_pitches'], era=stat['era'],
+                                  fip=stat['fip'], whip=stat['whip'], era_plus=stat['era_plus'],
+                                  fip_plus=stat['fip_plus'], war=stat['war'], wpa=stat['wpa'])
         stat_insert.save()
-        break
 
     return render(request, 'data/pitcher_stat.html')
