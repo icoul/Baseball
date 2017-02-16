@@ -1,0 +1,75 @@
+<html>
+<style>
+    .wrap {
+        display: flex;
+        width: 100% ;
+        justify-content: flex-start;
+    }
+    .cell {
+        display: flex-box;
+        align-items: center;
+    }
+    .description {
+        width: 100px;
+    }
+    .description ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 15px;
+        padding-left: 0px;
+        list-style: none;
+    }
+
+</style>
+<div class="wrap">
+    <div class = "cell description" style = "border : solid 1px black">
+        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>외야수</li></ul>
+        {% for info in infos %}
+            {% if info.player.position == '외야수' %}
+                {% if info.stat %}
+                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
+                {% else %}
+                    <ul><li>{{ info.player.name }}</li></ul>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class = "cell description" style = "border : solid 1px black">
+        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>내야수</li></ul>
+        {% for info in infos %}
+            {% if info.player.position == '내야수' %}
+                {% if info.stat %}
+                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
+                {% else %}
+                    <ul><li>{{ info.player.name }}</li></ul>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class = "cell description" style = "border : solid 1px black">
+        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>포수</li></ul>
+        {% for info in infos %}
+            {% if info.player.position == '포수' %}
+                {% if info.stat %}
+                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
+                {% else %}
+                    <ul><li>{{ info.player.name }}</li></ul>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class = "cell description" style = "border : solid 1px black">
+        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>투수</li></ul>
+        {% for info in infos %}
+            {% if info.player.position == '투수' %}
+                {% if info.stat %}
+                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
+                {% else %}
+                    <ul><li>{{ info.player.name }}</li></ul>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+</html>
