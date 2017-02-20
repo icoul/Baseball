@@ -1,0 +1,66 @@
+<div>
+    {{ player_info.number }} / {{ player_info.name }} / {{ player_info.birth }} / {{ player_info.height }} / {{ player_info.weight }}<br/>
+    {{ player_info.position }} / {{ player_info.hand }} /
+</div>
+<div>
+    {% if player_info.position == '외야수' or player_info.position == '내야수' or player_info.position == '포수' %}
+         타석 / {{ player_stat.all_bats }}<br/>
+         타수 / {{ player_stat.at_bats }}<br/>
+         득점 / {{ player_stat.runs_scored }}<br/>
+         안타 / {{ player_stat.hits }}<br/>
+         2루타 / {{ player_stat.doubles }}<br/>
+         3루타 / {{ player_stat.triples }}<br/>
+         홈런 / {{ player_stat.home_runs }}<br/>
+         루타 / {{ player_stat.total_base }}<br/>
+         타점 / {{ player_stat.runs_batted_in }}<br/>
+         도루 / {{ player_stat.stolen_bases }}<br/>
+         도루실패 / {{ player_stat.caught_stealing }}<br/>
+         볼넷 / {{ player_stat.bases_on_balls }}<br/>
+         사구 / {{ player_stat.hit_by_pitch }}<br/>
+         고의사구 / {{ player_stat.intentional_bob }}<br/>
+         삼진 / {{ player_stat.strike_out }}<br/>
+         병살 / {{ player_stat.double_play }}<br/>
+         희생타 / {{ player_stat.sacrifice }}<br/>
+         희플 / {{ player_stat.sacrifice_fly }}<br/>
+         타율 / {{ player_stat.batting_avg }}<br/>
+         출루율 / {{ player_stat.on_base_per }}<br/>
+         장타율 / {{ player_stat.slugging_per }}<br/>
+         OPS / {{ player_stat.ops }}<br/>
+         wOBA / {{ player_stat.woba }}<br/>
+         wRC+ / {{ player_stat.wrc_plus }}<br/>
+         WAR / {{ player_stat.war }}<br/>
+         WPA / {{ player_stat.wpa }}<br/>
+    {% endif %}
+
+    {% if player_info.position == '투수' %}
+         출장 / {{ player_stat.game }}<br/>
+         완투 / {{ player_stat.complited_game }}<br/>
+         완봉 / {{ player_stat.shutout }}<br/>
+         선발 / {{ player_stat.games_started }}<br/>
+         승 / {{ player_stat.wins }}<br/>
+         패 / {{ player_stat.loses }}<br/>
+         세이브 / {{ player_stat.saves }}<br/>
+         홀드 / {{ player_stat.holds }}<br/>
+         이닝 / {{ player_stat.innings }}<br/>
+         실점 / {{ player_stat.runs }}<br/>
+         자책 / {{ player_stat.earned_runs }}<br/>
+         타자 / {{ player_stat.batter }}<br/>
+         피안타 / {{ player_stat.hits }}<br/>
+         피2루타/ {{ player_stat.doubles }}<br/>
+         피3루타/ {{ player_stat.triples }}<br/>
+         피홈런/ {{ player_stat.home_runs }}<br/>
+         볼넷 / {{ player_stat.bases_on_balls }}<br/>
+         고의4구 / {{ player_stat.intentional_bob }}<br/>
+         사구 / {{ player_stat.hit_by_pitch }}<br/>
+         삼진 / {{ player_stat.strike_out }}<br/>
+         보크 / {{ player_stat.balks }}<br/>
+         폭투 / {{ player_stat.wild_pitches }}<br/>
+         방어율 / {{ player_stat.era }}<br/>
+         FIP / {{ player_stat.fip }}<br/>
+         WHIP / {{ player_stat.whip }}<br/>
+         ERA+ / {{ player_stat.era_plus }}<br/>
+         FIP+ / {{ player_stat.fip_plus }}<br/>
+         WAR / {{ player_stat.war }}<br/>
+         WPA / {{ player_stat.wpa }}<br/>
+    {% endif %}
+</div>

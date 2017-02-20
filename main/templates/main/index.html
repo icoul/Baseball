@@ -23,53 +23,19 @@
 
 </style>
 <div class="wrap">
-    <div class = "cell description" style = "border : solid 1px black">
-        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>외야수</li></ul>
-        {% for info in infos %}
-            {% if info.player.position == '외야수' %}
-                {% if info.stat %}
-                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
-                {% else %}
-                    <ul><li>{{ info.player.name }}</li></ul>
+    {% for position in positions %}
+        <div class = "cell description" style = "border : solid 1px black">
+            <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>{{ position }}</li></ul>
+            {% for info in infos %}
+                {% if info.player.position == position %}
+                    {% if info.stat %}
+                        <ul><li><a href="{% url 'stat' pk=info.player.pk %}">{{ info.player.name }}</a></li></ul>
+                    {% else %}
+                        <ul><li>{{ info.player.name }}</li></ul>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div class = "cell description" style = "border : solid 1px black">
-        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>내야수</li></ul>
-        {% for info in infos %}
-            {% if info.player.position == '내야수' %}
-                {% if info.stat %}
-                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
-                {% else %}
-                    <ul><li>{{ info.player.name }}</li></ul>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div class = "cell description" style = "border : solid 1px black">
-        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>포수</li></ul>
-        {% for info in infos %}
-            {% if info.player.position == '포수' %}
-                {% if info.stat %}
-                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
-                {% else %}
-                    <ul><li>{{ info.player.name }}</li></ul>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div class = "cell description" style = "border : solid 1px black">
-        <ul style = "border-bottom : solid 1px black; padding-bottom: 15px;"><li>투수</li></ul>
-        {% for info in infos %}
-            {% if info.player.position == '투수' %}
-                {% if info.stat %}
-                    <ul><li><a href="">{{ info.player.name }}</a></li></ul>
-                {% else %}
-                    <ul><li>{{ info.player.name }}</li></ul>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
 </div>
 </html>
